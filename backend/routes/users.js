@@ -6,8 +6,9 @@ const {
 // gets all users
 router.get('/users', getUser);
 
-// gets specific user based on id provided in url
-router.get('/users/:id', getProfile);
+// router.get('/users/:id', getProfile);
+
+router.get('/users/me', getProfile);
 
 router.patch('/users/me', updateProfile);
 

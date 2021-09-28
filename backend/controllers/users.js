@@ -3,16 +3,16 @@ const jwt = require('jsonwebtoken');
 const user = require('../models/user');
 const { checkError } = require('./checkError');
 
-// function for getting user from database
+// ______________________________________________function for getting user from database
 module.exports.getUser = (req, res) => {
   user.find({})
     .then((users) => res.send({ data: users }))
     .catch((error) => checkError(error, res));
 };
 
-// finds specific user in database
+// ______________________________________________________ finds specific user in database
 module.exports.getProfile = (req, res) => {
-  user.findById(req.params.id)
+  user.findById(req.user._id)
     .then((userProfile) => {
       if (!userProfile) {
         res.status(404).send({ message: 'User does not exist' });
@@ -22,6 +22,42 @@ module.exports.getProfile = (req, res) => {
     })
     .catch((error) => checkError(error, res));
 };
+
+// ____________________________________________________update the name or description
+module.exports.updateProfile = (req, res) => {
+  const { name, about } = req.body;
+  user.findByIdAndUpdate(req.user._id,
+    { name, about },
+    { new: true, runValidators: true })
+    .then((userProfile) => {
+      if (!userProfile) {
+        res.status(404).send({ message: 'User does not exist' });
+      } else {
+        res.send({ data: userProfile });
+      }
+    })
+    .catch((error) => checkError(error, res));
+};
+
+// _____________________________________________________update the avatar
+module.exports.updateAvatar = (req, res) => {
+  const { avatar } = req.body;
+  user.findByIdAndUpdate(req.user._id, { avatar },
+    {
+      new: true,
+      runValidators: true,
+    })
+    .then((userProfile) => {
+      if (!userProfile) {
+        res.status(404).send({ message: 'User does not exist' });
+      } else {
+        res.send({ data: userProfile });
+      }
+    })
+    .catch((error) => checkError(error, res));
+};
+
+// ____________________________________________these controllers require NO authorization
 
 module.exports.logIn = (req, res) => {
   const { email, password } = req.body;
@@ -45,39 +81,5 @@ module.exports.createUser = (req, res) => {
       name, about, avatar, email, password: hash,
     }))
     .then((newUser) => res.send({ data: newUser }))
-    .catch((error) => checkError(error, res));
-};
-
-// update the name or description
-module.exports.updateProfile = (req, res) => {
-  const { name, about } = req.body;
-  user.findByIdAndUpdate(req.user._id,
-    { name, about },
-    { new: true, runValidators: true })
-    .then((userProfile) => {
-      if (!userProfile) {
-        res.status(404).send({ message: 'User does not exist' });
-      } else {
-        res.send({ data: userProfile });
-      }
-    })
-    .catch((error) => checkError(error, res));
-};
-
-// update the avatar
-module.exports.updateAvatar = (req, res) => {
-  const { avatar } = req.body;
-  user.findByIdAndUpdate(req.user._id, { avatar },
-    {
-      new: true,
-      runValidators: true,
-    })
-    .then((userProfile) => {
-      if (!userProfile) {
-        res.status(404).send({ message: 'User does not exist' });
-      } else {
-        res.send({ data: userProfile });
-      }
-    })
     .catch((error) => checkError(error, res));
 };

@@ -10,21 +10,12 @@ module.exports.getCards = (req, res) => {
 
 // function for creating cards
 module.exports.createCard = (req, res) => {
-  console.log(req.params.id);
   const {
     name, link,
   } = req.body;
   card.create({
     name, link, owner: req.user._id,
   })
-    .then((cards) => res.send({ data: cards }))
-    .catch((error) => checkError(error, res));
-};
-
-// function for deleting a card
-module.exports.deleteCard = (req, res) => {
-  card.findByIdAndRemove(req.params.cardId)
-    .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
     .then((cards) => res.send({ data: cards }))
     .catch((error) => checkError(error, res));
 };
@@ -49,4 +40,20 @@ module.exports.dislikeCard = (req, res) => {
     .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
     .then((cardData) => res.send({ data: cardData }))
     .catch((error) => checkError(error, res));
+};
+
+// find card by Id and check owner Id against current owner id
+// then delete card
+
+// possible check if user is card owner to delete card
+module.exports.deleteCard = (req, res) => {
+  card.findById(req.params.id)
+    .then((cardInfo) => {
+      if (cardInfo.owner._id === req.user._id) {
+        card.findByIdAndRemove(req.params.cardId)
+          .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
+          .then((cards) => res.send({ data: cards }))
+          .catch((error) => checkError(error, res));
+      } else res.status(401).send({ message: 'Only card owners may delete their cards' });
+    });
 };

@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
-const errorRouter = require('./routes/errors');
 
 const auth = require('./middleware/auth');
 
@@ -20,27 +19,19 @@ app.use(express.json());
 
 app.use(express.urlencoded());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '61310d4d84185bd11146403e',
-  };
-
-  next();
-});
-
-app.use(usersRouter);
-
-app.use(cardsRouter);
-
-app.use('*', errorRouter);
-
-// all following routes require authorization
-app.use(auth);
-
 // routes for login and new user registration
 app.post('/signin', login);
 
 app.post('/signup', createUser);
+
+// app.use('*', errorRouter);
+
+// all following routes require authorization as dictated by .use(auth)
+app.use(auth);
+
+app.use(usersRouter);
+
+app.use(cardsRouter);
 
 // listen for correct port
 app.listen(PORT, () => {
