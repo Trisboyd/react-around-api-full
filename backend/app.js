@@ -6,7 +6,7 @@ const cardsRouter = require('./routes/cards');
 
 const auth = require('./middleware/auth');
 
-const { login, createUser } = require('./controllers/users');
+const { logIn, createUser } = require('./controllers/users');
 // const bodyParser = require('body-parser');
 
 const { PORT = 3000 } = process.env;
@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 // routes for login and new user registration
-app.post('/signin', login);
+app.post('/signin', logIn);
 
 app.post('/signup', createUser);
 
