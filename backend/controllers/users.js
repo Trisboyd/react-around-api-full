@@ -1,46 +1,48 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const user = require('../models/user');
-const { checkError } = require('./checkError');
+const NotFoundError = require('../middleware/errors/notFoundError');
+const AuthError = require('../middleware/errors/authError');
+const RequestError = require('../middleware/errors/requestError');
 
 // ______________________________________________function for getting user from database
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   user.find({})
-    .then((users) => res.send({ data: users }))
-    .catch((error) => checkError(error, res));
+    .then((users) => res.send({ users }))
+    .catch(next);
 };
 
 // ______________________________________________________ finds specific user in database
-module.exports.getProfile = (req, res) => {
+module.exports.getProfile = (req, res, next) => {
   user.findById(req.user._id)
     .then((userProfile) => {
       if (!userProfile) {
-        res.status(404).send({ message: 'User does not exist' });
+        throw new NotFoundError('User does not exist');
       } else {
-        res.send({ data: userProfile });
+        res.send({ userProfile });
       }
     })
-    .catch((error) => checkError(error, res));
+    .catch(next);
 };
 
 // ____________________________________________________update the name or description
-module.exports.updateProfile = (req, res) => {
+module.exports.updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   user.findByIdAndUpdate(req.user._id,
     { name, about },
     { new: true, runValidators: true })
     .then((userProfile) => {
       if (!userProfile) {
-        res.status(404).send({ message: 'User does not exist' });
+        throw new NotFoundError('User does not exist');
       } else {
-        res.send({ data: userProfile });
+        res.send({ userProfile });
       }
     })
-    .catch((error) => checkError(error, res));
+    .catch(next);
 };
 
 // _____________________________________________________update the avatar
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   user.findByIdAndUpdate(req.user._id, { avatar },
     {
@@ -49,30 +51,32 @@ module.exports.updateAvatar = (req, res) => {
     })
     .then((userProfile) => {
       if (!userProfile) {
-        res.status(404).send({ message: 'User does not exist' });
+        throw new NotFoundError('User does not exist');
       } else {
         res.send({ data: userProfile });
       }
     })
-    .catch((error) => checkError(error, res));
+    .catch(next);
 };
 
 // ____________________________________________these controllers require NO authorization
 
-module.exports.logIn = (req, res) => {
+module.exports.logIn = (req, res, next) => {
   const { email, password } = req.body;
   return user.findUserByCredentials(email, password)
     .then((userInfo) => {
-      const token = jwt.sign({ _id: userInfo._id }, 'secret-key', { expiresIn: '7d' });
-      res.send({ token });
+      if (!userInfo) {
+        throw new AuthError('Incorrect email or password');
+      } else {
+        const token = jwt.sign({ _id: userInfo._id }, 'secret-key', { expiresIn: '7d' });
+        res.send({ token });
+      }
     })
-    .catch((error) => {
-      res.status(401).send({ message: error.message });
-    });
+    .catch(next);
 };
 
 // create a new user
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -80,6 +84,11 @@ module.exports.createUser = (req, res) => {
     .then((hash) => user.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((newUser) => res.send({ data: newUser }))
-    .catch((error) => checkError(error, res));
+    .then((newUser) => {
+      if (!newUser) {
+        throw new RequestError('Invalid email or password');
+      }
+      res.send({ data: newUser });
+    })
+    .catch(next);
 };

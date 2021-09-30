@@ -34,7 +34,9 @@ app.use(usersRouter);
 app.use(cardsRouter);
 
 app.use((error, req, res, next) => {
-  res.status(500).send({ message: 'An error occurred on the server' });
+  const { statusCode = 500, message } = error;
+  res.status(statusCode)
+    .send({ message: statusCode === 500 ? 'An error occurred on the server' : message });
 });
 
 // listen for correct port

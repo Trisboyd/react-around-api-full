@@ -1,59 +1,65 @@
 const card = require('../models/card');
-const { checkError } = require('./checkError');
+const NotFoundError = require('../middleware/errors/notFoundError');
+const RequestError = require('../middleware/errors/requestError');
 
 // function for getting cards from database
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   card.find({})
     .then((cards) => res.send({ data: cards }))
-    .catch((error) => checkError(error, res));
+    .catch(next);
 };
 
 // function for creating cards
-module.exports.createCard = (req, res) => {
+module.exports.createCard = (req, res, next) => {
   const {
     name, link,
   } = req.body;
   card.create({
     name, link, owner: req.user._id,
   })
-    .then((cards) => res.send({ data: cards }))
-    .catch((error) => checkError(error, res));
+    .then((cards) => {
+      if (!cards) {
+        throw new RequestError('Invalid card information');
+      }
+      res.send({ data: cards });
+    })
+    .catch(next);
 };
 
-module.exports.likeCard = (req, res) => {
+module.exports.likeCard = (req, res, next) => {
   card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // add _id to the array if it's not there yet
     { new: true },
   )
-    .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
+    .orFail(() => { throw new NotFoundError('Card does not exist'); })
     .then((cardData) => res.send({ data: cardData }))
-    .catch((error) => checkError(error, res));
+    .catch(next);
 };
 
-module.exports.dislikeCard = (req, res) => {
+module.exports.dislikeCard = (req, res, next) => {
   card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // remove _id from the array
     { new: true },
   )
-    .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
+    .orFail(() => { throw new NotFoundError('Card does not exist'); })
     .then((cardData) => res.send({ data: cardData }))
-    .catch((error) => checkError(error, res));
+    .catch(next);
 };
 
 // find card by Id and check owner Id against current owner id
 // then delete card
 
 // possible check if user is card owner to delete card
-module.exports.deleteCard = (req, res) => {
+module.exports.deleteCard = (req, res, next) => {
   card.findById(req.params.id)
     .then((cardInfo) => {
       if (cardInfo.owner._id.toString() === req.user._id) {
         card.findByIdAndRemove(req.params.id)
-          .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
+          .orFail(() => { throw new NotFoundError('Card does not exist'); })
           .then((cards) => res.send({ data: cards }))
-          .catch((error) => checkError(error, res));
+          .catch(next);
       } else res.status(403).send({ message: 'Only card owners may delete their cards' });
     });
 };
