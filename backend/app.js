@@ -33,6 +33,10 @@ app.use(usersRouter);
 
 app.use(cardsRouter);
 
+app.use((error, req, res, next) => {
+  res.status(500).send({ message: 'An error occurred on the server' });
+});
+
 // listen for correct port
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

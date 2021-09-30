@@ -54,6 +54,6 @@ module.exports.deleteCard = (req, res) => {
           .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
           .then((cards) => res.send({ data: cards }))
           .catch((error) => checkError(error, res));
-      } else res.status(401).send({ message: 'Only card owners may delete their cards' });
+      } else res.status(403).send({ message: 'Only card owners may delete their cards' });
     });
 };
