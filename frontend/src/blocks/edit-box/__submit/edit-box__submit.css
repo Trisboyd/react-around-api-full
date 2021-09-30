@@ -1,0 +1,27 @@
+.edit-box__submit {
+    width: 83.5%;
+    min-height: 50.15px;
+    background: #000000;
+    border-radius: 2px;
+    border: none;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 48px auto 36.51px;
+    cursor:pointer;
+    transition: opacity .2s ease-in-out .2s;
+}
+
+.edit-box__submit:hover {
+    opacity: .8;
+}
+
+@media screen and (max-width: 425px) {
+    .edit-box__submit {
+        font-size: 14px;
+        line-height: 17px;
+    }    
+}

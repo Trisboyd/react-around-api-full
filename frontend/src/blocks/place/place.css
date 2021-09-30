@@ -1,0 +1,13 @@
+@import url(./__button/place__button.css);
+@import url(./__image/place__image.css);
+@import url(./__info/place__info.css);
+@import url(./__name/place__name.css);
+@import url(./__trash/place__trash.css);
+@import url(./__trash/place__trash_visible.css);
+@import url(./__trash/place__trash_hidden.css);
+@import url(./__like-count/place__like-count.css);
+
+.place {
+    max-width: 282px;
+    position: relative;
+}

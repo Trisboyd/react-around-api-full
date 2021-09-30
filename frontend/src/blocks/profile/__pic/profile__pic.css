@@ -1,0 +1,7 @@
+.profile__pic {
+    border-radius: 50%;
+    max-width: 127.5px;
+    min-height: 127.5px;
+    transition: opacity .3s ease-in-out .3s;
+    position: relative;
+}

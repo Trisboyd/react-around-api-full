@@ -1,0 +1,13 @@
+@import url(./place__info_like-column.css);
+
+.place__info {
+    background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-height: 79px;
+    align-items: center;
+    padding-left: 21px;
+    padding-right: 15px;
+    border-radius: 0px 0px 10px 10px;
+}

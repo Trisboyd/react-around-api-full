@@ -1,0 +1,12 @@
+.profile__image-container {
+}
+
+.profile__image-container:hover .profile__pic-edit {
+    visibility: visible;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.profile__image-container:hover .profile__pic {
+    opacity: .2;
+}

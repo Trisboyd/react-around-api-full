@@ -1,0 +1,11 @@
+@import url(./__pic/popup-image-container__pic.css);
+@import url(./__title/popup-image-container__title.css);
+
+.popup-image-container {
+    max-width: 75vw;
+    max-height: 75vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -1,0 +1,7 @@
+.place__trash_visible {
+    transition: opacity .2s linear .2s;
+}
+
+.place__trash_visible:hover {
+    opacity: .6;
+}

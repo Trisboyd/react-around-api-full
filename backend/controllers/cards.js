@@ -49,8 +49,8 @@ module.exports.dislikeCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   card.findById(req.params.id)
     .then((cardInfo) => {
-      if (cardInfo.owner._id === req.user._id) {
-        card.findByIdAndRemove(req.params.cardId)
+      if (cardInfo.owner._id.toString() === req.user._id) {
+        card.findByIdAndRemove(req.params.id)
           .orFail(() => { res.status(404).send({ message: 'Card does not exist' }); })
           .then((cards) => res.send({ data: cards }))
           .catch((error) => checkError(error, res));

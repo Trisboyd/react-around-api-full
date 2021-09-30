@@ -1,0 +1,18 @@
+.edit-box__text {
+    width: 83.5%;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    vertical-align: text-top;
+    color: #000000;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-left: 36px;
+    margin-top: 29.74px;
+    padding-bottom: 13.26px;
+}
+
+.edit-box__text:focus {
+    outline: none;
+}

@@ -1,0 +1,21 @@
+.profile__descriptor {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    margin-top: 16px;
+    margin-bottom: 24.75px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 450px;
+}
+
+@media screen and (max-width: 680px) {
+    .profile__descriptor {
+        text-align: center;
+        font-size: 14px;
+        line-height: 17px;
+    }
+}
