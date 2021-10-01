@@ -2,7 +2,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const validator = require('validator');
-const { Joi, celebrate } = require('celebrate');
+const { Joi, celebrate, errors } = require('celebrate');
+
+// loggers
+const { requestLogger, errorLogger } = require('./middleware/logger');
 
 // function for validating URL
 function validateUrl(string) {
@@ -28,10 +31,14 @@ const { PORT = 3000 } = process.env;
 // connect to mongo database
 mongoose.connect('mongodb://localhost:27017/aroundb');
 
-// App methods_______________________________________________________________________App methods
+// Setup for app
 app.use(express.json());
 
 app.use(express.urlencoded());
+
+// ROUTES_________________________________________________________________________________ROUTES
+
+app.use(requestLogger); // needed to log all requests
 
 // routes for login and new user registration
 app.post('/signin', celebrate({
@@ -51,14 +58,20 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-// app.use('*', errorRouter);
-
 // all following routes require authorization as dictated by .use(auth)
 app.use(auth);
 
 app.use(usersRouter);
 
 app.use(cardsRouter);
+
+// ERRORS_____________________________________________________________________________ERRORS
+
+// log all errors with Winston
+app.use(errorLogger);
+
+// error handler for sending errors to the client produced by celebrate
+app.use(errors());
 
 app.use((error, req, res, next) => {
   const { statusCode = 500, message } = error;
