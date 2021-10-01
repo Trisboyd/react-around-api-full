@@ -1,11 +1,14 @@
+// imports from within director
 const card = require('../models/card');
 const NotFoundError = require('../middleware/errors/notFoundError');
 const RequestError = require('../middleware/errors/requestError');
 
+// EXPORTED FUNCTIONS________________________________________________________________EXPORTS
+
 // function for getting cards from database
 module.exports.getCards = (req, res, next) => {
   card.find({})
-    .then((cards) => res.send({ data: cards }))
+    .then((cards) => res.send({ cards }))
     .catch(next);
 };
 
