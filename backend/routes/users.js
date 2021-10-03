@@ -4,7 +4,10 @@ const { Joi, celebrate } = require('celebrate');
 
 // function for validating URL
 function validateUrl(string) {
-  return validator.isURL(string);
+  if (!validator.isURL(string)) {
+    throw new Error('Invalid URL');
+  }
+  return string;
 }
 
 const router = require('express').Router();

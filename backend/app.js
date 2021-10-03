@@ -9,7 +9,10 @@ const { requestLogger, errorLogger } = require('./middleware/logger');
 
 // function for validating URL
 function validateUrl(string) {
-  return validator.isURL(string);
+  if (!validator.isURL(string)) {
+    throw new Error('Invalid URL');
+  }
+  return string;
 }
 
 // function for validating email
