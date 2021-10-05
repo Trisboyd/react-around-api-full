@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const validator = require('validator');
+const cors = require('cors');
 const { Joi, celebrate, errors } = require('celebrate');
 
 // loggers
@@ -21,6 +22,10 @@ function validateEmail(string) {
 }
 
 const app = express();
+
+// using CORS
+app.use(cors());
+app.options('*', cors());
 
 // routes containing request controllers
 const usersRouter = require('./routes/users');
