@@ -54,8 +54,8 @@ app.use(requestLogger); // needed to log all requests
 // routes for login and new user registration
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
     email: Joi.string().required().custom(validateEmail),
+    password: Joi.string().required(),
   }),
 }), logIn);
 
