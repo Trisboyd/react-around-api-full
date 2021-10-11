@@ -18,7 +18,10 @@ function validateUrl(string) {
 
 // function for validating email
 function validateEmail(string) {
-  return validator.isEmail(string);
+  if (!validator.isEmail(string)) {
+    throw new Error('Invalid email');
+  }
+  return string;
 }
 
 const app = express();
