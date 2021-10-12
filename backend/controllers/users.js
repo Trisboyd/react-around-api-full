@@ -19,7 +19,7 @@ module.exports.getProfile = (req, res, next) => {
       if (!userProfile) {
         throw new NotFoundError('User does not exist');
       } else {
-        res.send({ userProfile });
+        return res.send({ userProfile });
       }
     })
     .catch(next);
