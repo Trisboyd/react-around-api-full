@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const cors = require('cors');
 const { Joi, celebrate, errors } = require('celebrate');
+require('dotenv').config();
+
+// access key for json web token from environment variable stored in .env
+console.log(process.env.NODE_ENV);
 
 // loggers
 const { requestLogger, errorLogger } = require('./middleware/logger');
@@ -42,6 +46,13 @@ app.use(express.urlencoded());
 // ROUTES_________________________________________________________________________________ROUTES
 
 app.use(requestLogger); // needed to log all requests
+
+// testing function for server crash and pm2 restart
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will crash now');
+  }, 0);
+});
 
 // routes for login and new user registration
 app.post('/signin', celebrate({
