@@ -22,7 +22,7 @@ module.exports.getProfile = (req, res, next) => {
         return res.send({ userProfile });
       }
     })
-    .catch(next);
+    .catch(console.log(req), next);
 };
 
 // ____________________________________________________update the name or description

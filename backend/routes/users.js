@@ -1,6 +1,7 @@
 // dependency based constants
 const validator = require('validator');
 const { Joi, celebrate } = require('celebrate');
+const router = require('express').Router();
 
 // function for validating URL
 function validateUrl(string) {
@@ -10,7 +11,6 @@ function validateUrl(string) {
   return string;
 }
 
-const router = require('express').Router();
 const {
   getUser, getProfile, updateProfile, updateAvatar,
 } = require('../controllers/users');
@@ -28,10 +28,12 @@ router.patch('/users/me', celebrate({
   }),
 }), updateProfile);
 
-router.patch('/users/me/avatar', celebrate({
-  body: Joi.object().keys({
-    link: Joi.string().required().custom(validateUrl),
+router.patch('/users/me/avatar',
+  celebrate({
+    body: Joi.object().keys({
+      link: Joi.string().required().custom(validateUrl),
+    }),
   }),
-}), updateAvatar);
+  updateAvatar);
 
 module.exports = router;

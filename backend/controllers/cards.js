@@ -36,7 +36,7 @@ module.exports.likeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => { throw new NotFoundError('Card does not exist'); })
-    .then((cardData) => res.send({ data: cardData }))
+    .then((cardData) => res.send({ cardData }))
     .catch(next);
 };
 
@@ -47,7 +47,7 @@ module.exports.dislikeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => { throw new NotFoundError('Card does not exist'); })
-    .then((cardData) => res.send({ data: cardData }))
+    .then((cardData) => res.send({ cardData }))
     .catch(next);
 };
 
@@ -56,10 +56,10 @@ module.exports.dislikeCard = (req, res, next) => {
 
 // possible check if user is card owner to delete card
 module.exports.deleteCard = (req, res, next) => {
-  card.findById(req.params.id)
+  card.findById(req.params.cardId)
     .then((cardInfo) => {
-      if (cardInfo.owner._id.toString() === req.user._id) {
-        card.findByIdAndRemove(req.params.id)
+      if (cardInfo.owner.toString() === req.user._id) {
+        card.findByIdAndRemove(req.params.cardId)
           .orFail(() => { throw new NotFoundError('Card does not exist'); })
           .then((cards) => res.send({ data: cards }))
           .catch(next);

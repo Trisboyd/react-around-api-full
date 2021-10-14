@@ -7,14 +7,13 @@ const handleAuthError = (res) => {
 };
 
 // eslint-disable-next-line consistent-return
-module.exports = (req, res, next) => {
+const auth = (req, res, next) => {
   const { authorization } = req.headers;
-  console.log(authorization);
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return handleAuthError(res);
   }
 
-  const token = authorization.replace('Bearer', '');
+  const token = authorization.replace('Bearer ', '');
   let payload;
 
   try {
@@ -27,3 +26,5 @@ module.exports = (req, res, next) => {
 
   next(); // passing the request further along
 };
+
+module.exports = auth;
