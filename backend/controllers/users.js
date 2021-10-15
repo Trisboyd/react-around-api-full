@@ -5,6 +5,9 @@ const NotFoundError = require('../middleware/errors/notFoundError');
 const AuthError = require('../middleware/errors/authError');
 const RequestError = require('../middleware/errors/requestError');
 
+// ___________________________________________access secret key in environment variable
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 // ______________________________________________function for getting user from database
 module.exports.getUser = (req, res, next) => {
   user.find({})
@@ -68,7 +71,8 @@ module.exports.logIn = (req, res, next) => {
       if (!userInfo) {
         throw new AuthError('Incorrect email or password');
       } else {
-        const token = jwt.sign({ _id: userInfo._id }, 'secret-key', { expiresIn: '7d' });
+        const token = jwt.sign({ _id: userInfo._id },
+          NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
         res.send({ token });
       }
     })
