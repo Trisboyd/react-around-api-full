@@ -92,7 +92,7 @@ module.exports.createUser = (req, res, next) => {
       if (!newUser) {
         throw new RequestError('Invalid email or password');
       }
-      res.send({ data: newUser });
+      res.send({ data: { _id: newUser._id, email: newUser.email } });
     })
     .catch(next);
 };
