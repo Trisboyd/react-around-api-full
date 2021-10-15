@@ -5,6 +5,7 @@ const validator = require('validator');
 const cors = require('cors');
 const { Joi, celebrate, errors } = require('celebrate');
 require('dotenv').config();
+const errorHandler = require('./middleware/errorHandler');
 
 // access key for json web token from environment variable stored in .env
 console.log(process.env.NODE_ENV);
@@ -84,11 +85,7 @@ app.use(errorLogger);
 // error handler for sending errors to the client produced by celebrate
 app.use(errors());
 
-app.use((error, req, res, next) => {
-  const { statusCode = 500, message } = error;
-  res.status(statusCode)
-    .send({ message: statusCode === 500 ? 'An error occurred on the server' : message });
-});
+app.use(errorHandler);
 
 // listen for correct port
 app.listen(PORT, () => {
