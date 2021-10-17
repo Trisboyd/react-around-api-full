@@ -2,7 +2,7 @@
 const card = require('../models/card');
 const NotFoundError = require('../middleware/errors/notFoundError');
 const RequestError = require('../middleware/errors/requestError');
-const AuthError = require('../middleware/errors/authError');
+const ForbiddenError = require('../middleware/errors/forbiddenError');
 
 // EXPORTED FUNCTIONS________________________________________________________________EXPORTS
 
@@ -64,6 +64,6 @@ module.exports.deleteCard = (req, res, next) => {
           .orFail(() => { throw new NotFoundError('Card does not exist'); })
           .then((cards) => res.send({ data: cards }))
           .catch(next);
-      } else throw AuthError('Only card owners may delete their cards');
+      } else throw ForbiddenError('Only card owners may delete their cards');
     });
 };

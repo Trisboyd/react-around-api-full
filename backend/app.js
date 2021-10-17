@@ -6,6 +6,7 @@ const cors = require('cors');
 const { Joi, celebrate, errors } = require('celebrate');
 require('dotenv').config();
 const errorHandler = require('./middleware/errorHandler');
+const NotFoundError = require('./middleware/errors/notFoundError');
 
 // access key for json web token from environment variable stored in .env
 console.log(process.env.NODE_ENV);
@@ -76,6 +77,11 @@ app.use(auth);
 app.use(usersRouter);
 
 app.use(cardsRouter);
+
+// all unspecifed routes will return an error
+app.get('*', () => {
+  throw new NotFoundError('Requested resource not found');
+});
 
 // ERRORS_____________________________________________________________________________ERRORS
 
