@@ -1,4 +1,4 @@
-# Around the US Backend Backend
+# Around the US Backend
 (plus link to full hosted site)
 
 # [Visit the live site here!](https://www.boydaround.students.nomoreparties.site/)
@@ -13,8 +13,12 @@ a space to share and interact with one another's favorite places around the U.S.
 
 ## Technologies/Features
 MERN Stack- includes React authorization with JWT
+
 BEM - CSS style system
+
 MongoDB - The database
+
+Google Cloud - Site hosting
 
 ---
 
