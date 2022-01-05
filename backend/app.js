@@ -37,6 +37,9 @@ const { logIn, createUser } = require('./controllers/users');
 // PORT
 const { PORT = 3000 } = process.env;
 
+// for proxy service Heroku
+app.set('trust proxy', 1);
+
 // this variable for HEROKU connection to MongoDB
 const { MONGODB_URI } = process.env;
 
