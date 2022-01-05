@@ -37,8 +37,11 @@ const { logIn, createUser } = require('./controllers/users');
 // PORT
 const { PORT = 3000 } = process.env;
 
+// this variable for HEROKU connection to MongoDB
+const { MONGODB_URI } = process.env;
+
 // connect to mongo database
-mongoose.connect('mongodb://localhost:27017/aroundb');
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Setup for app
 app.use(express.json());
