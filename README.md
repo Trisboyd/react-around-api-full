@@ -1,10 +1,31 @@
-# react-around-api-full
-The API of "Around the U.S." with authorization and registration handled by the back-end server.
+# Around the US Backend
+(plus link to full hosted site)
 
-This repository contains the full API of "Around the U.S." project that features user authorization and user registration and handles cards and users. Please add to this readme:
+# [Visit the live site here!](https://www.boydaround.students.nomoreparties.site/)
+---
 
-The website can be found at:
-https://www.boydaround.students.nomoreparties.site/
+## Overview
+This site offers the user the opportunity to create a personal account, and then multiple cards featuring locations they have visited, or want to visit.
+Other user location cards are also visible giving users the opportunity to like each other's locations. In this way, the website offers multiple people
+a space to share and interact with one another's favorite places around the U.S.
 
-The repository can be found at:
-https://github.com/Trisboyd/react-around-api-full
+---
+
+## Technologies/Features
+MERN Stack- includes React authorization with JWT
+
+BEM - CSS style system
+
+MongoDB - The database
+
+Google Cloud - Site hosting
+
+---
+
+## Updates
+May include user's ability to give comments on locations and/or organize cards by location
+
+---
+
+## Links
+Frontend repository can be found [here](https://github.com/Trisboyd/react-around-auth)
