@@ -1,7 +1,7 @@
 # Around the US Backend
 (plus link to full hosted site)
 
-# [Visit the live site here!](https://www.boydaround.students.nomoreparties.site/)
+# [Visit the live site here!](https://trisboyd.github.io/react-around-auth/)
 ---
 
 ## Overview
